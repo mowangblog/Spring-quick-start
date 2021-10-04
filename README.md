@@ -24,5 +24,45 @@
    | **6.降低Java EE API的使用难度** | Spring对很多难用的Java EE API（如JDBC，JavaMail，远程调用等）提供了一个薄薄的封装层，通过Spring的简易封装，这些Java EE API的使用难度大为降低。 |
    | **7.Java 源码是经典学习范例**   | Spring的源码设计精妙、结构清晰、匠心独运，处处体现着大师对Java设计模式灵活运用以及对Java技术的高深造诣。 |
 
-   
+
+## IOC（概念和原理）
+
+1. 什么是IOC
+   - 控制反转，把对象创建对象之间的调用过程，交给Spring进行管理
+   - 为了降低耦合度
+2. IOC底层原理
+   -    xml解析、工厂模式、反射
+
+## IOC（接口）
+
+1. IOC 思想基于IOC容器完成，容器底层就是对象工厂
+
+2. Spring 提供IOC容器实现两种方式：
+
+   1. BeanFactory：IOC容器基本实现，是Spring内部的使用接口，不提供给开发人员使用
+
+      *加载配置文件使不会加载对象，在使用对象时才会创建对象
+
+   2. ApplicationContext： BeanFactory的子接口，提供更强大的功能，一般由开发人员使用
+
+      *加载配置文件时候就会创建对象
+
+3. ApplicationContext实现类
+
+   1. ```
+      ClassPathXmlApplicationContext
+      ```
+
+   2. ```
+      FileSystemXmlApplicationContext
+      ```
+
+## IOC操作Bean管理
+
+1. 什么是Bean管理
+   - Spring创建对象
+   - Spring注入属性
+2. Bean管理操作的两种方式
+   - 基于xml配置文件方式
+   - 基于注解方式实现
 

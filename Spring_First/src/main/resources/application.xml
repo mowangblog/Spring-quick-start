@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- set注入属性 -->
+    <bean id="user" class="top.mowang.pojo.User">
+        <property name="name" value="mowang">
+        </property>
+        <property name="age" value="18">
+        </property>
+        <!--内部bean-->
+        <property name="dept">
+            <bean class="top.mowang.pojo.Dept">
+                <constructor-arg name="deptName" value="学工部">
+                </constructor-arg>
+            </bean>
+        </property>
+        <!--级联赋值-->
+       <property name="dept.deptName" value="事业部">
+       </property>
+    </bean>
+
+    <!-- 有参构造注入属性 -->
+    <bean id="user2" class="top.mowang.pojo.User2">
+        <constructor-arg name="name" >
+            <value><![CDATA[<<<属性值包含特殊符号>>>]]></value>
+        </constructor-arg>
+        <constructor-arg name="age" value="18">
+        </constructor-arg>
+    </bean>
+
+    <!-- p空间注入属性底层还是set -->
+    <bean id="user3" class="top.mowang.pojo.User3" p:name="user" >
+        <property name="age">
+            <!--给age设置空值-->
+            <null/>
+        </property>
+    </bean>
+
+
+    <bean id="userDao" class="top.mowang.dao.impl.UserDaoImpl">
+    </bean>
+    <bean id="userService" class="top.mowang.service.impl.UserServiceImpl">
+        <!--注入外部bean-->
+        <property name="userDao" ref="userDao">
+        </property>
+    </bean>
+</beans>

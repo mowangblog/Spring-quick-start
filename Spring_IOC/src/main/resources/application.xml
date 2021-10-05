@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <!--使用util注入集合 scope可以设置创建模式，默认是单例模式-->
+    <util:list id="Users" scope="prototype">
+        <bean  class="top.mowang.pojo.User" p:name="lixuan111" p:age="13">
+            <property name="dept" ref="dept"/>
+        </bean>
+        <bean  class="top.mowang.pojo.User" p:name="李煊111" p:age="18">
+            <property name="dept" ref="dept"/>
+        </bean>
+    </util:list>
+
+    <!--注入集合-->
+    <bean id="dept" class="top.mowang.pojo.Dept" scope="singleton" init-method="init" destroy-method="destroy">
+        <!--数组注入-->
+        <property name="workArrays">
+            <array>
+                <value>打工人</value>
+                <value>扫地工</value>
+            </array>
+        </property>
+        <!--注入集合-->
+        <property name="users" ref="Users">
+           <!-- <list>
+                <bean  class="top.mowang.pojo.User" p:name="lixuan" p:age="13">
+                   <property name="dept" ref="dept"/>
+                </bean>
+                <bean  class="top.mowang.pojo.User" p:name="李煊" p:age="18">
+                    <property name="dept" ref="dept"/>
+                </bean>
+            </list>-->
+        </property>
+        <!--注入map-->
+        <property name="userMap">
+            <map>
+                <entry key="1" value-ref="user"/>
+                <entry key="2">
+                    <bean  class="top.mowang.pojo.User" p:name="大魔王" p:age="13">
+                        <property name="dept" ref="dept"/>
+                    </bean>
+                </entry>
+                <entry key="3" value-ref="user"/>
+            </map>
+        </property>
+        <!--注入set-->
+        <property name="userSet">
+            <set>
+                <bean  class="top.mowang.pojo.User" p:name="大魔王" p:age="13">
+                    <property name="dept" ref="dept"/>
+                </bean>
+            </set>
+        </property>
+        <property name="deptName" value="王霸之气"/>
+    </bean>
+
+    <!-- set注入属性 -->
+    <bean id="user" class="top.mowang.pojo.User">
+        <property name="name" value="mowang">
+        </property>
+        <property name="age" value="18">
+        </property>
+        <!--内部bean-->
+        <property name="dept">
+            <bean class="top.mowang.pojo.Dept">
+                <constructor-arg name="deptName" value="学工部">
+                </constructor-arg>
+            </bean>
+        </property>
+        <!--级联赋值-->
+       <property name="dept.deptName" value="事业部">
+       </property>
+    </bean>
+
+    <!-- 有参构造注入属性 -->
+    <bean id="user2" class="top.mowang.pojo.User2">
+        <constructor-arg name="name" >
+            <value><![CDATA[<<<属性值包含特殊符号>>>]]></value>
+        </constructor-arg>
+        <constructor-arg name="age" value="18">
+        </constructor-arg>
+    </bean>
+
+    <!-- p空间注入属性底层还是set -->
+    <bean id="user3" class="top.mowang.pojo.User3" p:name="user" >
+        <property name="age">
+            <!--给age设置空值-->
+            <null/>
+        </property>
+    </bean>
+
+
+   <!-- <bean id="userDao" class="top.mowang.dao.impl.UserDaoImpl">
+    </bean>
+    <bean id="userService" class="top.mowang.service.impl.UserServiceImpl">
+        &lt;!&ndash;注入外部bean&ndash;&gt;
+        <property name="userDao" ref="userDao">
+        </property>
+    </bean>-->
+</beans>

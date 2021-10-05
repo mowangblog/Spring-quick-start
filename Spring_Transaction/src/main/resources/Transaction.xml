@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--组件扫描-->
+    <context:component-scan base-package="top.mowang">
+
+    </context:component-scan>
+    <!--引入外部文件-->
+    <!--默认情况下，如果在指定的属性文件中找不到属性，它还会检查Java系统属性。可能会导致username变成电脑名-->
+    <!--手动设置 <context:property-placeholder> 标签的 system-properties-mode 属性值为 NEVER 或者 FALLBACK 即可解决-->
+    <context:property-placeholder location="jdbc.properties" system-properties-mode="NEVER"/>
+
+    <!--连接池-->
+    <bean id="druid" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${driverClassName}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+        <property name="url" value="${url}"/>
+    </bean>
+
+    <!--jdbc连接对象-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="druid">
+        </property>
+    </bean>
+
+    <!--创建事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--注入数据源-->
+        <property name="dataSource" ref="druid">
+        </property>
+    </bean>
+
+    <!--配置事务通知-->
+    <tx:advice id="txAdvice" >
+        <!--配置事务参数-->
+        <tx:attributes >
+            <!--配置哪种规则的方法上添加事务-->
+            <tx:method name="send*"/>
+            <tx:method name="update*"/>
+            <tx:method name="delete*"/>
+            <tx:method name="bath*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置事务切面切入点-->
+    <aop:config >
+        <!--配置切入点-->
+        <aop:pointcut id="pt" expression="execution(* top.mowang.service.impl.BookServiceImpl.*(..))"/>
+        <!--配置切面-->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pt" />
+    </aop:config>
+    <!--设置自动生成代理对象，使用cglib-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--开启事务注解-->
+<!--    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>-->
+</beans>

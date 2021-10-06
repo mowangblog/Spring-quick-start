@@ -136,15 +136,54 @@
 ## 事务
 
 1. 事务是数据库操作的基本单元，逻辑上一组操作，要么都成功，要么都失败
+
 2. 事务四个特性
+
    - 原子性
    - 一致性
    - 隔离性
    - 持久性
+
 3. Spring事务操作
+
    - 事务添加到Service层
+
    - 事务管理两种方式：编程式事务管理和声明式事务管理（一般使用声明式）
+
    - 声明式事务管理
+
      1. 基于注解方式
      2. 基于xml文件配置文件方式
      3. 底层使用AOP原理
+
+   - 事务注解参数
+
+   - ```
+     propagation 事务传播行为
+     ioslation 事务隔离级别
+     timout 超时时间
+     readonly 是否只读
+     rollbackFor 回滚
+     ```
+
+   - [事务隔离级别](https://mowangblog.top/mowang/mysql)
+
+   - 事务传播行为 
+
+![img](https://res.mowangblog.top/img/2021/10/20170420212829825)
+
+
+
+## Spring5
+
+1. Spring5框架基于JDK8，运行时兼容JDK9，许多不建议使用的类和方法被移除
+2. Spring5框架自带了通用日志封装
+3. Spring5框架核心容器支持@Nullable注解
+   - 使用在方式上表示方法返回值可以为空
+   - 使用在方法参数里面表示方法参数可以为空
+   - 使用在属性上面，表示属性值可以为空
+4. Spring5框架核心容器支持函数式风格GenericApplicationContext
+5. Spring5框架支持整合junit
+
+## Webflux
+

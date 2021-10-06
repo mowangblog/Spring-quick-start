@@ -55,7 +55,7 @@ public class BookServiceImpl implements BookService{
     @Override
     public void sendMoney(User senUser, User reciverUser) {
         bookDao.sendMoney(senUser);
-        int i = 10/0;
+//        int i = 10/0;
         bookDao.revicerMoney(reciverUser);
     }
 
